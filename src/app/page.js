@@ -1,8 +1,7 @@
-'use client'
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Brain, Zap, Users, Target, Code, Rocket, Globe, Award, BookOpen, ArrowRight, Menu, X, Sun, Moon, Activity, Cpu, Shield, Database } from 'lucide-react';
 
-export default function Portfolio() {
+const Portfolio = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -50,7 +49,9 @@ export default function Portfolio() {
       {[...Array(20)].map((_, i) => (
         <div
           key={i}
-          className="absolute w-1 h-1 bg-cyan-400 rounded-full opacity-30 animate-pulse"
+          className={`absolute w-1 h-1 rounded-full animate-pulse ${
+            darkMode ? 'bg-cyan-400 opacity-30' : 'bg-cyan-500 opacity-35'
+          }`}
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
@@ -72,7 +73,7 @@ export default function Portfolio() {
               cx={Math.random() * 800}
               cy={Math.random() * 600}
               r="2"
-              fill="cyan"
+              fill={darkMode ? "cyan" : "#0e7490"}
               className="animate-pulse"
             />
             <line
@@ -80,9 +81,9 @@ export default function Portfolio() {
               y1={Math.random() * 600}
               x2={Math.random() * 800}
               y2={Math.random() * 600}
-              stroke="cyan"
+              stroke={darkMode ? "cyan" : "#0e7490"}
               strokeWidth="0.5"
-              opacity="0.3"
+              opacity={darkMode ? "0.3" : "0.35"}
             />
           </g>
         ))}
@@ -110,17 +111,32 @@ export default function Portfolio() {
 
   const GlowCard = ({ children, className = "", hover = true }) => (
     <div className={`
-      relative overflow-hidden rounded-xl border border-gray-700/50 backdrop-blur-sm
-      ${hover ? 'hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/20' : ''}
+      relative overflow-hidden rounded-xl backdrop-blur-sm
+      ${darkMode 
+        ? 'border border-gray-700/50 bg-gray-800/50' 
+        : 'border border-gray-400/30 bg-gray-50/80 shadow-md'
+      }
+      ${hover ? (darkMode 
+        ? 'hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/20' 
+        : 'hover:border-cyan-500/40 hover:shadow-lg hover:shadow-cyan-500/25'
+      ) : ''}
       transition-all duration-500 group ${className}
     `}>
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 via-purple-600/5 to-cyan-600/5" />
+      <div className={`absolute inset-0 ${
+        darkMode 
+          ? 'bg-gradient-to-r from-blue-600/5 via-purple-600/5 to-cyan-600/5' 
+          : 'bg-gradient-to-r from-blue-600/8 via-purple-600/8 to-cyan-600/8'
+      }`} />
       <div className="relative z-10">
         {children}
       </div>
       {hover && (
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-transparent to-blue-500/10" />
+          <div className={`absolute inset-0 ${
+            darkMode 
+              ? 'bg-gradient-to-r from-cyan-500/10 via-transparent to-blue-500/10' 
+              : 'bg-gradient-to-r from-cyan-500/12 via-transparent to-blue-500/12'
+          }`} />
         </div>
       )}
     </div>
@@ -150,9 +166,10 @@ export default function Portfolio() {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
-      {/* Custom CSS for glow effects */}
-      <style jsx>{`
+    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}>
+      {/* Custom CSS styles */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
         .glow-text {
           text-shadow: 0 0 10px currentColor;
         }
@@ -187,7 +204,8 @@ export default function Portfolio() {
         .pulse-glow {
           animation: pulse-glow 2s ease-in-out infinite;
         }
-      `}</style>
+        `
+      }} />
 
       {/* Mouse follower */}
       <div 
@@ -297,54 +315,75 @@ export default function Portfolio() {
               <TypewriterText text="Founder & CEO @ Vezran™" delay={0} />
             </p>
             <p className={`text-lg ${darkMode ? 'text-gray-400' : 'text-gray-500'} font-mono`}>
-              <TypewriterText text="Building secure-by-default AI infrastructure + Complete AI automation across platforms" delay={2000} />
+              <TypewriterText text="Privacy and security first Super-AI ecosystem + Complete automation across platforms" delay={100} />
             </p>
             <p className={`text-sm ${darkMode ? 'text-cyan-400' : 'text-cyan-600'} font-mono mt-2`}>
-              <TypewriterText text="Michigan.origin() → Bay_Area.expanding()" delay={4000} />
+              <TypewriterText text="Bay_Area.expanding()" delay={200} />
             </p>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <button
-              onClick={() => scrollToSection('vezran')}
+            <a
+              href="https://www.vezran.com"
+              target="_blank"
               className="group px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/25 border border-cyan-400/30"
             >
               <span className="flex items-center space-x-2">
                 <Cpu size={20} />
                 <span>Explore Vezran</span>
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                <ExternalLink size={16} className="group-hover:translate-x-1 transition-transform" />
               </span>
-            </button>
+            </a>
             <button
-              onClick={() => scrollToSection('investor')}
+              onClick={() => scrollToSection('vezran')}
               className={`group px-8 py-4 border-2 border-cyan-500/50 rounded-lg font-semibold transition-all duration-300 hover:bg-cyan-500/10 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20 ${darkMode ? 'text-cyan-300' : 'text-cyan-600'}`}
             >
               <span className="flex items-center space-x-2 font-mono">
                 <Database size={20} />
-                <span>Investor Info</span>
+                <span>Vezran Info</span>
               </span>
             </button>
           </div>
           
           <div className="flex justify-center space-x-6">
-            <a href="#" className="group p-4 rounded-full bg-gray-800/50 border border-cyan-500/30 hover:border-cyan-400 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-cyan-500/20">
-              <Github size={20} className="text-cyan-400 group-hover:text-cyan-300" />
+            <a href="#" className={`group p-4 rounded-full border transition-all duration-300 hover:scale-110 ${
+              darkMode 
+                ? 'bg-gray-800/60 border-cyan-500/30 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20' 
+                : 'bg-gray-50/70 border-cyan-400/40 hover:border-cyan-500 hover:shadow-lg hover:shadow-cyan-400/30'
+            }`}>
+              <Github size={20} className={`${darkMode ? 'text-cyan-400 group-hover:text-cyan-300' : 'text-cyan-600 group-hover:text-cyan-700'}`} />
             </a>
-            <a href="https://www.linkedin.com/in/taazbro/" target="_blank" className="group p-4 rounded-full bg-gray-800/50 border border-cyan-500/30 hover:border-cyan-400 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-cyan-500/20">
-              <Linkedin size={20} className="text-cyan-400 group-hover:text-cyan-300" />
+            <a href="https://www.linkedin.com/in/taazbro/" target="_blank" className={`group p-4 rounded-full border transition-all duration-300 hover:scale-110 ${
+              darkMode 
+                ? 'bg-gray-800/60 border-cyan-500/30 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20' 
+                : 'bg-gray-50/70 border-cyan-400/40 hover:border-cyan-500 hover:shadow-lg hover:shadow-cyan-400/30'
+            }`}>
+              <Linkedin size={20} className={`${darkMode ? 'text-cyan-400 group-hover:text-cyan-300' : 'text-cyan-600 group-hover:text-cyan-700'}`} />
             </a>
-            <a href="https://x.com/t_a_a_z" target="_blank" className="group p-4 rounded-full bg-gray-800/50 border border-cyan-500/30 hover:border-cyan-400 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-cyan-500/20">
-              <svg className="w-5 h-5 text-cyan-400 group-hover:text-cyan-300" fill="currentColor" viewBox="0 0 24 24">
+            <a href="https://x.com/t_a_a_z" target="_blank" className={`group p-4 rounded-full border transition-all duration-300 hover:scale-110 ${
+              darkMode 
+                ? 'bg-gray-800/60 border-cyan-500/30 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20' 
+                : 'bg-gray-50/70 border-cyan-400/40 hover:border-cyan-500 hover:shadow-lg hover:shadow-cyan-400/30'
+            }`}>
+              <svg className={`w-5 h-5 ${darkMode ? 'text-cyan-400 group-hover:text-cyan-300' : 'text-cyan-600 group-hover:text-cyan-700'}`} fill="currentColor" viewBox="0 0 24 24">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
               </svg>
             </a>
-            <a href="https://www.instagram.com/ta_a_z/" target="_blank" className="group p-4 rounded-full bg-gray-800/50 border border-cyan-500/30 hover:border-cyan-400 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-cyan-500/20">
-              <svg className="w-5 h-5 text-cyan-400 group-hover:text-cyan-300" fill="currentColor" viewBox="0 0 24 24">
+            <a href="https://www.instagram.com/ta_a_z/" target="_blank" className={`group p-4 rounded-full border transition-all duration-300 hover:scale-110 ${
+              darkMode 
+                ? 'bg-gray-800/60 border-cyan-500/30 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20' 
+                : 'bg-gray-50/70 border-cyan-400/40 hover:border-cyan-500 hover:shadow-lg hover:shadow-cyan-400/30'
+            }`}>
+              <svg className={`w-5 h-5 ${darkMode ? 'text-cyan-400 group-hover:text-cyan-300' : 'text-cyan-600 group-hover:text-cyan-700'}`} fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
               </svg>
             </a>
-            <a href="mailto:taaz@vezran.com" className="group p-4 rounded-full bg-gray-800/50 border border-cyan-500/30 hover:border-cyan-400 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-cyan-500/20">
-              <Mail size={20} className="text-cyan-400 group-hover:text-cyan-300" />
+            <a href="mailto:taaz@vezran.com" className={`group p-4 rounded-full border transition-all duration-300 hover:scale-110 ${
+              darkMode 
+                ? 'bg-gray-800/60 border-cyan-500/30 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20' 
+                : 'bg-gray-50/70 border-cyan-400/40 hover:border-cyan-500 hover:shadow-lg hover:shadow-cyan-400/30'
+            }`}>
+              <Mail size={20} className={`${darkMode ? 'text-cyan-400 group-hover:text-cyan-300' : 'text-cyan-600 group-hover:text-cyan-700'}`} />
             </a>
           </div>
         </div>
@@ -358,7 +397,7 @@ export default function Portfolio() {
       </section>
 
       {/* About Section */}
-      <section id="about" className={`py-20 relative overflow-hidden ${darkMode ? 'bg-gray-800/30' : 'bg-gray-50'}`}>
+      <section id="about" className={`py-20 relative overflow-hidden ${darkMode ? 'bg-gray-800/30' : 'bg-gray-200/40'}`}>
         <div className="absolute inset-0 neural-bg opacity-30" />
         <FloatingParticles />
         
@@ -379,11 +418,12 @@ export default function Portfolio() {
                 AI Automation & Security Expert
               </h3>
               <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} mb-6 leading-relaxed`}>
-                Currently pursuing a BS in Cybersecurity at Eastern Michigan University (3.44 GPA, Junior standing as of August 2025) 
-                while leading Vezran's mission to deliver secure-by-default infrastructure for enterprise-grade AI deployment. 
-                Specializing in complete AI automation across multiple platforms and models, with expertise in LangChain, N*N frameworks, 
-                Zapier integrations, and pro-level LLMs including GPT, Claude, Grok, and Mistral. Currently developing skills in AI engineering 
-                and architecture. <span className="text-cyan-400 font-mono">I prefer results over noise.</span>
+                AI & Cybersecurity Researcher leading VEZRAN's mission to create the world's first privacy-first Super-AI ecosystem. 
+                Building something for everyone—from 10-year-old students to global enterprises—so every person, brand, and nation 
+                can benefit from safe, sovereign intelligence. Expert in complete AI automation across multiple platforms and models, 
+                with expertise in LangChain, N*N frameworks, Zapier integrations, and pro-level LLMs including GPT, Claude, Grok, and Mistral. 
+                Currently developing advanced skills in AI engineering and architecture. 
+                <span className="text-cyan-400 font-mono">I prefer results over noise.</span>
               </p>
               
               <div className="space-y-4">
@@ -448,6 +488,14 @@ export default function Portfolio() {
               </div>
             </GlowCard>
           </div>
+          
+          <div className="text-center mt-12">
+            <a href="https://www.vezran.com" target="_blank" className="group px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 font-mono border border-cyan-400/30 inline-flex items-center space-x-2">
+              <Activity size={16} className="animate-pulse" />
+              <span>Explore VEZRAN Ecosystem</span>
+              <ExternalLink size={16} className="group-hover:translate-x-1 transition-transform" />
+            </a>
+          </div>
         </div>
       </section>
 
@@ -471,7 +519,7 @@ export default function Portfolio() {
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <GlowCard className="bg-gray-800/30 p-6 float-animation">
+            <GlowCard className={`${darkMode ? 'bg-gray-800/40' : 'bg-gray-50/80'} p-6 float-animation`}>
               <Brain className="text-cyan-400 mb-4 pulse-glow" size={32} />
               <h3 className="text-xl font-semibold mb-3 font-mono text-cyan-300">Enterprise AI Security</h3>
               <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} font-mono text-sm leading-relaxed`}>
@@ -480,7 +528,7 @@ export default function Portfolio() {
               </p>
             </GlowCard>
             
-            <GlowCard className="bg-gray-800/30 p-6 float-animation" style={{ animationDelay: '2s' }}>
+            <GlowCard className={`${darkMode ? 'bg-gray-800/40' : 'bg-gray-50/80'} p-6 float-animation`} style={{ animationDelay: '2s' }}>
               <Zap className="text-purple-400 mb-4 pulse-glow" size={32} />
               <h3 className="text-xl font-semibold mb-3 font-mono text-purple-300">Strategic Partnerships</h3>
               <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} font-mono text-sm leading-relaxed`}>
@@ -489,7 +537,7 @@ export default function Portfolio() {
               </p>
             </GlowCard>
             
-            <GlowCard className="bg-gray-800/30 p-6 float-animation" style={{ animationDelay: '4s' }}>
+            <GlowCard className={`${darkMode ? 'bg-gray-800/40' : 'bg-gray-50/80'} p-6 float-animation`} style={{ animationDelay: '4s' }}>
               <Target className="text-pink-400 mb-4 pulse-glow" size={32} />
               <h3 className="text-xl font-semibold mb-3 font-mono text-pink-300">Scalable Architecture</h3>
               <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} font-mono text-sm leading-relaxed`}>
@@ -517,7 +565,7 @@ export default function Portfolio() {
       </section>
 
       {/* Expertise Section */}
-      <section id="expertise" className={`py-20 relative overflow-hidden ${darkMode ? 'bg-gray-800/30' : 'bg-gray-50'}`}>
+      <section id="expertise" className={`py-20 relative overflow-hidden ${darkMode ? 'bg-gray-800/30' : 'bg-gray-200/40'}`}>
         <FloatingParticles />
         <div className="absolute inset-0 matrix-bg opacity-20" />
         
@@ -536,49 +584,49 @@ export default function Portfolio() {
               { 
                 category: "AI Automation & LLMs", 
                 skills: ["LangChain", "N*N Frameworks", "Zapier Integration", "ChatGPT/GPT-4", "Claude (Anthropic)", "Grok (X.AI)", "Mistral AI", "Google Gemini"],
-                icon: <Brain className="text-cyan-400" size={24} />,
+                icon: <Brain className={darkMode ? "text-cyan-400" : "text-cyan-600"} size={24} />,
                 color: "cyan"
               },
               { 
                 category: "AI Engineering (Learning)", 
                 skills: ["AI Architecture Design", "Model Fine-tuning", "Vector Databases", "Prompt Engineering", "API Integration", "Lovable Platform", "Google AI Studio"],
-                icon: <Cpu className="text-purple-400" size={24} />,
+                icon: <Cpu className={darkMode ? "text-purple-400" : "text-purple-600"} size={24} />,
                 color: "purple"
               },
               { 
                 category: "Cybersecurity & Networks", 
                 skills: ["Cryptography & Cryptanalysis", "Penetration Testing", "Vulnerability Assessment", "Network Security", "Cisco Packet Tracer", "Wireshark", "Metasploit", "Nmap"],
-                icon: <Shield className="text-pink-400" size={24} />,
+                icon: <Shield className={darkMode ? "text-pink-400" : "text-pink-600"} size={24} />,
                 color: "pink"
               },
               { 
                 category: "Programming & Development", 
                 skills: ["Python Automation", "C++", "HTML/CSS", "JavaScript", "SQL", "JSON", "Git/GitHub", "REST APIs"],
-                icon: <Code className="text-green-400" size={24} />,
+                icon: <Code className={darkMode ? "text-green-400" : "text-green-600"} size={24} />,
                 color: "green"
               },
               { 
                 category: "Systems & Tools", 
                 skills: ["Windows Server Admin", "Linux/Unix", "VMware/VirtualBox", "ServiceNow", "Jira", "Docker (Learning)", "AWS (Basic)", "Microsoft 365 Suite"],
-                icon: <Database className="text-yellow-400" size={24} />,
+                icon: <Database className={darkMode ? "text-yellow-400" : "text-yellow-600"} size={24} />,
                 color: "yellow"
               },
               { 
                 category: "Creative & Leadership", 
                 skills: ["Adobe Creative Suite", "Broadcast Graphics", "Team Management", "Agile Methodologies", "Process Improvement", "Cross-functional Collaboration"],
-                icon: <Users className="text-blue-400" size={24} />,
+                icon: <Users className={darkMode ? "text-blue-400" : "text-blue-600"} size={24} />,
                 color: "blue"
               }
             ].map((area, index) => (
-              <GlowCard key={index} className="bg-gray-800/30 p-6 hover:scale-105 transition-transform duration-300">
+              <GlowCard key={index} className={`${darkMode ? 'bg-gray-800/40' : 'bg-gray-50/80'} p-6 hover:scale-105 transition-transform duration-300`}>
                 <div className="flex items-center space-x-3 mb-4">
                   {area.icon}
-                  <h3 className="text-lg font-semibold font-mono text-cyan-300">{area.category}</h3>
+                  <h3 className={`text-lg font-semibold font-mono ${darkMode ? 'text-cyan-300' : 'text-cyan-700'}`}>{area.category}</h3>
                 </div>
                 <ul className="space-y-2">
                   {area.skills.map((skill, i) => (
-                    <li key={i} className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'} font-mono flex items-center space-x-2`}>
-                      <span className="text-cyan-400">▸</span>
+                    <li key={i} className={`text-sm font-mono flex items-center space-x-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      <span className={darkMode ? 'text-cyan-400' : 'text-cyan-600'}>▸</span>
                       <span>{skill}</span>
                     </li>
                   ))}
@@ -649,29 +697,35 @@ export default function Portfolio() {
                 statusColor: "green"
               }
             ].map((project, index) => (
-              <GlowCard key={index} className="bg-gray-800/30 p-6 hover:scale-105 transition-all duration-300">
+              <GlowCard key={index} className={`${darkMode ? 'bg-gray-800/40' : 'bg-gray-50/80'} p-6 hover:scale-105 transition-all duration-300`}>
                 <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-xl font-semibold font-mono text-cyan-300">{project.title}</h3>
-                  <span className={`px-3 py-1 text-xs rounded-full font-mono border ${
-                    project.statusColor === 'green' ? 'bg-green-500/20 text-green-400 border-green-500/30' :
-                    project.statusColor === 'blue' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' :
-                    project.statusColor === 'purple' ? 'bg-purple-500/20 text-purple-400 border-purple-500/30' :
-                    'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
-                  } animate-pulse`}>
+                  <h3 className={`text-xl font-semibold font-mono ${darkMode ? 'text-cyan-300' : 'text-cyan-700'}`}>{project.title}</h3>
+                  <span className={`px-3 py-1 text-xs rounded-full font-mono border animate-pulse ${
+                    project.statusColor === 'green' ? (darkMode ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'bg-green-100 text-green-700 border-green-400') :
+                    project.statusColor === 'blue' ? (darkMode ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' : 'bg-blue-100 text-blue-700 border-blue-400') :
+                    project.statusColor === 'purple' ? (darkMode ? 'bg-purple-500/20 text-purple-400 border-purple-500/30' : 'bg-purple-100 text-purple-700 border-purple-400') :
+                    (darkMode ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' : 'bg-yellow-100 text-yellow-700 border-yellow-500')
+                  }`}>
                     {project.status}
                   </span>
                 </div>
-                <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} mb-4 font-mono text-sm leading-relaxed`}>
+                <p className={`mb-4 font-mono text-sm leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                   {project.description}
                 </p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tech.map((tech, i) => (
-                    <span key={i} className="px-2 py-1 text-xs rounded bg-gray-700/50 text-cyan-300 font-mono border border-cyan-500/30">
+                    <span key={i} className={`px-2 py-1 text-xs rounded font-mono border ${
+                      darkMode 
+                        ? 'bg-gray-700/50 text-cyan-300 border-cyan-500/30' 
+                        : 'bg-cyan-50 text-cyan-700 border-cyan-300'
+                    }`}>
                       {tech}
                     </span>
                   ))}
                 </div>
-                <button className="group flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 transition-colors font-mono">
+                <button className={`group flex items-center space-x-2 transition-colors font-mono ${
+                  darkMode ? 'text-cyan-400 hover:text-cyan-300' : 'text-cyan-600 hover:text-cyan-700'
+                }`}>
                   <span>View Details</span>
                   <ExternalLink size={14} className="group-hover:scale-110 transition-transform" />
                 </button>
@@ -682,7 +736,7 @@ export default function Portfolio() {
       </section>
 
       {/* Investor Section */}
-      <section id="investor" className={`py-20 relative overflow-hidden ${darkMode ? 'bg-gray-800/30' : 'bg-gray-50'}`}>
+      <section id="investor" className={`py-20 relative overflow-hidden ${darkMode ? 'bg-gray-800/30' : 'bg-gray-200/40'}`}>
         <FloatingParticles />
         <div className="absolute inset-0 matrix-bg opacity-20" />
         
@@ -692,45 +746,76 @@ export default function Portfolio() {
               Investor Information
             </h2>
             <p className={`text-xl ${darkMode ? 'text-gray-300' : 'text-gray-600'} max-w-3xl mx-auto font-mono`}>
-              Join us in shaping the future of enterprise AI security infrastructure.
+              Join us in creating the world's first privacy-first Super-AI ecosystem that serves everyone from students to global enterprises.
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <GlowCard className="bg-gray-800/30 p-6 text-center hover:scale-105 transition-transform duration-300">
-              <h3 className="text-3xl font-bold text-cyan-400 mb-2 font-mono">C-CORP</h3>
-              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} font-mono`}>Delaware Structure</p>
+            <GlowCard className={`${darkMode ? 'bg-gray-800/40' : 'bg-gray-50/80'} p-6 text-center hover:scale-105 transition-transform duration-300`}>
+              <h3 className="text-3xl font-bold text-cyan-400 mb-2 font-mono">GLOBAL</h3>
+              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} font-mono`}>Super-AI Ecosystem</p>
             </GlowCard>
-            <GlowCard className="bg-gray-800/30 p-6 text-center hover:scale-105 transition-transform duration-300">
-              <h3 className="text-3xl font-bold text-purple-400 mb-2 font-mono">MULTIPLE</h3>
-              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} font-mono`}>SaaS Design Partners</p>
+            <GlowCard className={`${darkMode ? 'bg-gray-800/40' : 'bg-gray-50/80'} p-6 text-center hover:scale-105 transition-transform duration-300`}>
+              <h3 className="text-3xl font-bold text-purple-400 mb-2 font-mono">25+</h3>
+              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} font-mono`}>Language Support</p>
             </GlowCard>
-            <GlowCard className="bg-gray-800/30 p-6 text-center hover:scale-105 transition-transform duration-300">
-              <h3 className="text-3xl font-bold text-pink-400 mb-2 font-mono">BAY AREA</h3>
-              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} font-mono`}>Expansion Presence</p>
+            <GlowCard className={`${darkMode ? 'bg-gray-800/40' : 'bg-gray-50/80'} p-6 text-center hover:scale-105 transition-transform duration-300`}>
+              <h3 className="text-3xl font-bold text-pink-400 mb-2 font-mono">2035</h3>
+              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} font-mono`}>AI-Human Coexistence</p>
             </GlowCard>
           </div>
           
           <GlowCard className="bg-gradient-to-r from-cyan-900/30 to-blue-900/30 p-8 text-center border-cyan-500/30">
             <h3 className="text-2xl font-semibold mb-4 font-mono text-cyan-400">Investment Opportunity</h3>
-            <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} text-lg mb-6 max-w-3xl mx-auto font-mono leading-relaxed`}>
-              Vezran represents a unique opportunity to invest in the future of AI security infrastructure. 
-              Our enterprise-first approach and focus on secure-by-default systems positions us at the 
-              forefront of the next wave in AI adoption.
+            <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} text-lg mb-6 max-w-4xl mx-auto font-mono leading-relaxed`}>
+              VEZRAN represents a unique opportunity to invest in the future of Super-AI. We're building the world's first 
+              privacy-first ecosystem that serves everyone—from students to enterprises—with sovereign, quantum-safe AI. 
+              Our vision extends from immediate enterprise solutions to a 2035 future where AI peacefully co-exists with humanity everywhere.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="group px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 font-mono border border-cyan-400/30">
+              <a
+                href="https://www.vezran.com"
+                target="_blank"
+                className="group px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 font-mono border border-cyan-400/30"
+              >
                 <span className="flex items-center space-x-2">
                   <Database size={16} />
                   <span>Download Pitch Deck</span>
+                  <ExternalLink size={16} className="group-hover:translate-x-1 transition-transform" />
                 </span>
-              </button>
-              <button className="group px-8 py-3 border-2 border-cyan-500/50 rounded-lg font-semibold transition-all duration-300 hover:bg-cyan-500/10 hover:border-cyan-400 font-mono">
-                <span className="flex items-center space-x-2">
-                  <Activity size={16} />
-                  <span>Schedule Meeting</span>
-                </span>
-              </button>
+              </a>
+              <div className="relative group">
+                <button className="group px-8 py-3 border-2 border-cyan-500/50 rounded-lg font-semibold transition-all duration-300 hover:bg-cyan-500/10 hover:border-cyan-400 font-mono">
+                  <span className="flex items-center space-x-2">
+                    <Activity size={16} />
+                    <span>Schedule Meeting</span>
+                  </span>
+                </button>
+                <div className="absolute top-full left-0 right-0 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                  <div className={`${darkMode ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-300'} border rounded-lg shadow-lg p-2`}>
+                    <a
+                      href="https://calendly.com/taaz-vezran"
+                      target="_blank"
+                      className={`block px-4 py-2 rounded font-mono text-sm transition-colors ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100 text-gray-700'}`}
+                    >
+                      📅 Calendly Meeting
+                    </a>
+                    <a
+                      href="mailto:taaz@vezran.com?subject=Meeting Request&body=Hi, I'd like to schedule a meeting to discuss Vezran."
+                      className={`block px-4 py-2 rounded font-mono text-sm transition-colors ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100 text-gray-700'}`}
+                    >
+                      ✉️ Email Request
+                    </a>
+                    <a
+                      href="https://zoom.us/j/your-meeting-id"
+                      target="_blank"
+                      className={`block px-4 py-2 rounded font-mono text-sm transition-colors ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100 text-gray-700'}`}
+                    >
+                      🎥 Zoom Meeting
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </GlowCard>
         </div>
@@ -751,18 +836,18 @@ export default function Portfolio() {
           
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             <a href="mailto:taaz@vezran.com" className="group">
-              <GlowCard className="bg-gray-800/30 p-6 hover:scale-105 transition-all duration-300 text-center">
-                <Mail className="text-cyan-400 mx-auto mb-4 group-hover:scale-110 transition-transform" size={32} />
-                <h3 className="text-lg font-semibold mb-2 font-mono text-cyan-300">Email</h3>
-                <p className={`${darkMode ? 'text-gray-400' : 'text-gray-600'} font-mono text-sm`}>taaz@vezran.com</p>
+              <GlowCard className={`${darkMode ? 'bg-gray-800/40' : 'bg-gray-50/80'} p-6 hover:scale-105 transition-all duration-300 text-center`}>
+                <Mail className={`mx-auto mb-4 group-hover:scale-110 transition-transform ${darkMode ? 'text-cyan-400' : 'text-cyan-600'}`} size={32} />
+                <h3 className={`text-lg font-semibold mb-2 font-mono ${darkMode ? 'text-cyan-300' : 'text-cyan-700'}`}>Email</h3>
+                <p className={`font-mono text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>taaz@vezran.com</p>
               </GlowCard>
             </a>
             
             <a href="https://www.linkedin.com/in/taazbro/" target="_blank" className="group">
-              <GlowCard className="bg-gray-800/30 p-6 hover:scale-105 transition-all duration-300 text-center">
-                <Linkedin className="text-cyan-400 mx-auto mb-4 group-hover:scale-110 transition-transform" size={32} />
-                <h3 className="text-lg font-semibold mb-2 font-mono text-cyan-300">LinkedIn</h3>
-                <p className={`${darkMode ? 'text-gray-400' : 'text-gray-600'} font-mono text-sm`}>Professional networking</p>
+              <GlowCard className={`${darkMode ? 'bg-gray-800/40' : 'bg-gray-50/80'} p-6 hover:scale-105 transition-all duration-300 text-center`}>
+                <Linkedin className={`mx-auto mb-4 group-hover:scale-110 transition-transform ${darkMode ? 'text-cyan-400' : 'text-cyan-600'}`} size={32} />
+                <h3 className={`text-lg font-semibold mb-2 font-mono ${darkMode ? 'text-cyan-300' : 'text-cyan-700'}`}>LinkedIn</h3>
+                <p className={`font-mono text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Professional networking</p>
               </GlowCard>
             </a>
           </div>
@@ -770,7 +855,7 @@ export default function Portfolio() {
       </section>
 
       {/* Footer */}
-      <footer className={`py-8 border-t ${darkMode ? 'border-cyan-500/20 bg-gray-900/50' : 'border-gray-200 bg-gray-50'} relative overflow-hidden`}>
+      <footer className={`py-8 border-t relative overflow-hidden ${darkMode ? 'border-cyan-500/20 bg-gray-900/50' : 'border-cyan-500/25 bg-gray-200/50'}`}>
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: `
@@ -791,4 +876,4 @@ export default function Portfolio() {
   );
 };
 
-// Remove this line completely since we're using export default above
+export default Portfolio;
